@@ -66,7 +66,7 @@ def build_argparser():
                         type=str, default=None)
     parser.add_argument("-d", "--device",
                         help="Specify the target device to infer on; "
-                             "CPU, GPU, FPGA, MYRIAD is acceptable. Application"
+                             "CPU, GPU, FPGA, HDDL or MYRIAD is acceptable. Application"
                              " will look for a suitable plugin for device "
                              "specified (CPU by default)", default="CPU", type=str)
     parser.add_argument("-pt", "--prob_threshold",
@@ -161,7 +161,7 @@ def main():
     # Initialise the class
     infer_network = Network()
     # Load the network to IE plugin to get shape of input layer
-    n, c, h, w = infer_network.load_model(args.model, args.device, 1, 1, 0, args.cpu_extension)
+    n, c, h, w = infer_network.load_model(args.model, args.device, 1, 1, 0, args.cpu_extension)[1]
 
     print("To stop the execution press Esc button")
     initial_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))

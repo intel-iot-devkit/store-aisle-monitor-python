@@ -146,7 +146,7 @@ def main():
     # Initialise the class
     infer_network = Network()
     # Load the network to IE plugin to get shape of input layer
-    n, c, h, w = infer_network.load_model(model_xml, device, 1, 1, 0, cpu_extension)
+    n, c, h, w = infer_network.load_model(model_xml, device, 1, 1, 0, cpu_extension)[1]
 
     print("To stop the execution press Esc button")
     initial_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
