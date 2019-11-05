@@ -1,5 +1,4 @@
 
-
 # Store Aisle Monitor
 
 
@@ -30,7 +29,7 @@ This reference implementation counts the number of people present in an image an
   ```  
   uname -a
   ```  
-* Intel® Distribution of OpenVINO™ toolkit 2019 R2 Release
+* Intel® Distribution of OpenVINO™ toolkit 2019 R3 Release
 * Microsoft Azure* Python SDK
 
 ## How it Works
@@ -52,7 +51,7 @@ This reference implementation counts the number of people present in an image an
 Clone the reference implementation
 ```
 sudo apt-get update && sudo apt-get install git
-git clone https://github.com/intel-iot-devkit/store-aisle-monitor-python.git
+git clone https://gitlab.devtools.intel.com/reference-implementations/store-aisle-monitor-python.git
 ```
 
 ### Install Intel® Distribution of OpenVINO™ toolkit
@@ -69,7 +68,7 @@ The Azure python SDK allows you to build applications against Microsoft Azure St
 
 ### Which model to use
 
-This application uses the [**person-detection-retail-0013**](https://docs.openvinotoolkit.org/2019_R1/_person_detection_retail_0013_description_person_detection_retail_0013.html) Intel® pre-trained model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
+This application uses the [**person-detection-retail-0013**](https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_detection_retail_0013_description_person_detection_retail_0013.html) Intel® pre-trained model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
 
 To download the model and install the dependencies of the application, run the below command in the `store-aisle-monitor-python` directory:
 ```
@@ -148,7 +147,7 @@ To see a list of the various options:
 
     python3 store_aisle_monitor.py --help
 
-A user can specify what target device to run on by using the device command-line argument `-d` followed by one of the values `CPU`, `GPU`, `HDDL` or `MYRIAD`.
+A user can specify what target device to run on by using the device command-line argument `-d` followed by one of the values `CPU`, `GPU`, `HDDL`, `MYRIAD` or `HETERO:FPGA,CPU`.
 To run with multiple devices use -d MULTI:device1,device2. For example: `-d MULTI:CPU,GPU,HDDL`
 If no target device is specified the application will run on the CPU by default.
 
@@ -156,60 +155,79 @@ If no target device is specified the application will run on the CPU by default.
 
 Although the application runs on the CPU by default, this can also be explicitly specified through the `-d CPU` command-line argument:
 
-    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP32/person-detection-retail-0013.xml -l /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.7
+    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml -l /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.7
 To run the application on sync mode, use `-f sync` as command line argument. By default, the application runs on async mode.
 
 ### Run on the Integrated GPU
 
 * To run on the integrated Intel® GPU in 32-bit mode, use the below command.
     ```
-    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP32/person-detection-retail-0013.xml -d GPU -pt 0.7
+    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml -d GPU -pt 0.7
     ```
     **FP32**: FP32 is single-precision floating-point arithmetic uses 32 bits to represent numbers. 8 bits for the magnitude and 23 bits for the precision. For more information, [click here](https://en.wikipedia.org/wiki/Single-precision_floating-point_format)<br>
 
 * To run on the integrated Intel® GPU in 16-bit mode, use the below command.
     ```
-    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP16/person-detection-retail-0013.xml -d GPU -pt 0.7
+    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml -d GPU -pt 0.7
     ```
    **FP16**: FP16 is half-precision floating-point arithmetic uses 16 bits. 5 bits for the magnitude and 10 bits for the precision. For more information, [click here](https://en.wikipedia.org/wiki/Half-precision_floating-point_format)
     
 ### Run on the Intel® Neural Compute Stick
 To run on the Intel® Neural Compute Stick, use the ```-d MYRIAD``` command-line argument:
 
-    python3 store_aisle_monitor.py -d MYRIAD -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP16/person-detection-retail-0013.xml -pt 0.7
+    python3 store_aisle_monitor.py -d MYRIAD -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml -pt 0.7
 
 **Note:** The Intel® Neural Compute Stick can only run FP16 models. The model that is passed to the application, through the `-m <path_to_model>` command-line argument, must be of data type FP16.
 
 ### Run on the Intel® Movidius™ VPU
 To run on the Intel® Movidius™ VPU, use the `-d HDDL` command-line argument:
 
-    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP16/person-detection-retail-0013.xml -d HDDL
+    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml -d HDDL
 
 **Note:** The HDDL-R can only run FP16 models. The model that is passed to the application, through the `-m <path_to_model>` command-line argument, must be of data type FP16.
-<!--
-### Running on the FPGA
 
-Before running the application on the FPGA,  program the AOCX (bitstream) file. Use the setup_env.sh script from [fpga_support_files.tgz](https://clicktime.symantec.com/38YrYPLxxSqYhBQLb1eruhW7Vc?u=http%3A%2F%2Fregistrationcenter-download.intel.com%2Fakdlm%2Firc_nas%2F12954%2Ffpga_support_files.tgz) to set the environment variables.<br>
-For example:
+### Run on the Intel® Arria® 10 FPGA
 
-    source /home/<user>/Downloads/fpga_support_files/setup_env.sh
+Before running the application on the FPGA, set the environment variables and  program the AOCX (bitstream) file.<br>
 
-The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_bitstreams` folder.<br><br>To program the bitstream use the below command:<br>
+Set the Board Environment Variable to the proper directory:
 
-    aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_bitstreams/2019R1_PL1_FP11_RMNet.aocx
+```
+export AOCL_BOARD_PACKAGE_ROOT=/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/BSP/a10_1150_sg<#>
+```
+**NOTE**: If you do not know which version of the board you have, please refer to the product label on the fan cover side or by the product SKU: Mustang-F100-A10-R10 => SG1; Mustang-F100-A10E-R10 => SG2 <br>
 
-For more information on programming the bitstreams, please refer to https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11
+Set the Board Environment Variable to the proper directory: 
+```
+export QUARTUS_ROOTDIR=/home/<user>/intelFPGA/18.1/qprogrammer
+```
+Set the remaining environment variables:
+```
+export PATH=$PATH:/opt/altera/aocl-pro-rte/aclrte-linux64/bin:/opt/altera/aocl-pro-rte/aclrte-linux64/host/linux64/bin:/home/<user>/intelFPGA/18.1/qprogrammer/bin
+export INTELFPGAOCLSDKROOT=/opt/altera/aocl-pro-rte/aclrte-linux64
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$AOCL_BOARD_PACKAGE_ROOT/linux64/lib
+export CL_CONTEXT_COMPILER_MODE_INTELFPGA=3
+source /opt/altera/aocl-pro-rte/aclrte-linux64/init_opencl.sh
+```
+**NOTE**: It is recommended to create your own script for your system to aid in setting up these environment variables. It will be run each time you need a new terminal or restart your system. 
 
-To run the application on the FPGA with floating point precision 16 (FP16), use the `-d HETERO:FPGA,CPU` command-line argument:
+The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/` directory.<br><br>To program the bitstream use the below command:<br>
+```
+aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/2019R3_PV_PL1_FP11_RMNet.aocx
+```
 
-    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP16/person-detection-retail-0013.xml -l /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so -d HETERO:FPGA,CPU
--->
+For more information on programming the bitstreams, please refer to [OpenVINO-Install-Linux-FPGA](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11)
+
+To run the application on the FPGA with floating point precision 16 (FP16), use the `-d HETERO:FPGA,CPU` command-line argument:<br>
+
+    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml -l /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so -d HETERO:FPGA,CPU
+
 
 ## (Optional) Saving snapshots to the Cloud 
 To upload the results to the cloud, the Microsoft Azure storage name and storage key are provided as the command line arguments.
 Use `-an` and `-ak` options to specify Microsoft Azure storage name and storage key respectively.
 
-    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP32/person-detection-retail-0013.xml -l /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.7 -an <azure-account-name> -ak <azure-account-key>
+    python3 store_aisle_monitor.py -m /opt/intel/openvino/deployment_tools/open_model_ -l /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so -d CPU -pt 0.7 -an <azure-account-name> -ak <azure-account-key>
 
 **Note:** <br>
 To obtain account name and account key from the Microsoft Azure portal, please refer:
