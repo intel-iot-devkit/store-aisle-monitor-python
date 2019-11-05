@@ -51,7 +51,7 @@ This reference implementation counts the number of people present in an image an
 Clone the reference implementation
 ```
 sudo apt-get update && sudo apt-get install git
-git clone https://gitlab.devtools.intel.com/reference-implementations/store-aisle-monitor-python.git
+git clone https://github.com/intel-iot-devkit/store-aisle-monitor-python.git
 ```
 
 ### Install Intel® Distribution of OpenVINO™ toolkit
