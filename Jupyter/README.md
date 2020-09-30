@@ -1,10 +1,12 @@
+﻿
+
 # Store Aisle Monitor
 
 
 | Details               |                  |
 |-----------------------|------------------|
-| Target OS             |  Ubuntu\* 16.04 LTS     |
-| Programming Language  |  Python* 3.5 |
+| Target OS             |  Ubuntu\* 18.04 LTS     |
+| Programming Language  |  Python* 3.6 |
 | Time to complete      |  30 min      |
 
 
@@ -21,13 +23,13 @@ This reference implementation counts the number of people present in an image an
 
 ### Software
 
-* [Ubuntu* 16.04](http://releases.ubuntu.com/16.04/)
+* [Ubuntu* 18.04](http://releases.ubuntu.com/18.04/)
 * OpenCL™ Runtime Package<br>
   **Note**: We recommend using a 4.14+ kernel to use this software. Run the following command to determine your kernel version:
   ```  
   uname -a
   ```  
-* Intel® Distribution of OpenVINO™ toolkit 2019 R3 Release
+* Intel® Distribution of OpenVINO™ toolkit 2020 R3 Release
 * Microsoft Azure* Python SDK
 
 ## How it Works
@@ -47,13 +49,6 @@ This reference implementation counts the number of people present in an image an
 
 ## Setup
 
-### Get the code
-Clone the reference implementation
-```
-sudo apt-get update && sudo apt-get install git
-git clone https://gitlab.devtools.intel.com/reference-implementations/store-aisle-monitor-python.git
-```
-
 ### Install Intel® Distribution of OpenVINO™ toolkit
 
 Refer to [https://software.intel.com/en-us/articles/OpenVINO-Install-Linux](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux) for more information on how to install and setup the Intel® Distribution of OpenVINO™ toolkit.
@@ -64,9 +59,11 @@ The OpenCL™ Runtime package is required to run the inference on a GPU. It is n
 **Microsoft Azure python SDK**<br>
 The Azure python SDK allows you to build applications against Microsoft Azure Storage. [Azure Storage](https://docs.microsoft.com/en-us/azure/storage/common/storage-introduction) is Microsoft's cloud storage solution for modern data storage scenarios. Azure Storage offers a massively scalable object store for data objects, a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
 
+
+
 ### Which model to use
 
-This application uses the [**person-detection-retail-0013**](https://docs.openvinotoolkit.org/2019_R3/_models_intel_person_detection_retail_0013_description_person_detection_retail_0013.html) Intel® pre-trained model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
+This application uses the [**person-detection-retail-0013**](https://docs.openvinotoolkit.org/2020.3/_models_intel_person_detection_retail_0013_description_person_detection_retail_0013.html) Intel® pre-trained model, that can be accessed using the **model downloader**. The **model downloader** downloads the __.xml__ and __.bin__ files that will be used by the application.
 
 To download the model and install the dependencies of the application, run the below command in the `store-aisle-monitor-python` directory:
 ```
@@ -132,7 +129,7 @@ For example, if the output of above command is __/dev/video0__, then config.json
 
 Configure the environment to use the Intel® Distribution of OpenVINO™ toolkit one time per session by running the following command:
 
-    source /opt/intel/openvino/bin/setupvars.sh -pyver 3.5
+    source /opt/intel/openvino/bin/setupvars.sh
 
 **Note:** This command needs to be executed only once in the terminal where the application will be executed. If the terminal is closed, the command needs to be executed again.
 
@@ -146,38 +143,7 @@ cd <path_to_the_store-aisle-monitor-python_directory>/Jupyter
 jupyter notebook
 ```
 
-**NOTE**:
- Before running the application on the FPGA, set the environment variables and  program the AOCX (bitstream) file.<br>
-
- Set the Board Environment Variable to the proper directory:
-
- ```
- export AOCL_BOARD_PACKAGE_ROOT=/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/BSP/a10_1150_sg<#>
- ```
- **NOTE**: If you do not know which version of the board you have, please refer to the product label on the fan cover side or by the product SKU: Mustang-F100-A10-R10 => SG1; Mustang-F100-A10E-R10 => SG2 <br>
-
- Set the Board Environment Variable to the proper directory: 
- ```
- export QUARTUS_ROOTDIR=/home/<user>/intelFPGA/18.1/qprogrammer
- ```
- Set the remaining environment variables:
- ```
- export PATH=$PATH:/opt/altera/aocl-pro-rte/aclrte-linux64/bin:/opt/altera/aocl-pro-rte/aclrte-linux64/host/linux64/bin:/home/<user>/intelFPGA/18.1/qprogrammer/bin
- export INTELFPGAOCLSDKROOT=/opt/altera/aocl-pro-rte/aclrte-linux64
- export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$AOCL_BOARD_PACKAGE_ROOT/linux64/lib
- export CL_CONTEXT_COMPILER_MODE_INTELFPGA=3
- source /opt/altera/aocl-pro-rte/aclrte-linux64/init_opencl.sh
- ```
- **NOTE**: It is recommended to create your own script for your system to aid in setting up these environment variables. It will be run each time you need a new terminal or restart your system. 
-
- The bitstreams for HDDL-F can be found under the `/opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/` directory.<br><br>To program the bitstream use the below command:<br>
- ```
- aocl program acl0 /opt/intel/openvino/bitstreams/a10_vision_design_sg<#>_bitstreams/2019R3_PV_PL1_FP11_RMNet.aocx
- ```
-
- For more information on programming the bitstreams, please refer to [OpenVINO-Install-Linux-FPGA](https://software.intel.com/en-us/articles/OpenVINO-Install-Linux-FPGA#inpage-nav-11)
-
-**Follow the steps below :**
+#### Follow the steps to run the code on Jupyter*:
 
 ![Jupyter Notebook](./docs/images/jupy1.png)
 
@@ -190,8 +156,7 @@ jupyter notebook
 
 4. Export the below environment variables in second cell of Jupyter and press **Shift+Enter**.
     ```
-    %env MODEL = /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml
-    %env CPU_EXTENSION = /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so 
+    %env MODEL = /opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP32/person-detection-retail-0013.xml 
     %env INPUT = resources/store-aisle-detection.mp4
     ```
 5. User can set the threshold for the detection (PROB_THRESHOLD) and target device to infer on (DEVICE).
@@ -227,30 +192,28 @@ jupyter notebook
 
            %env DEVICE = GPU
            %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml 
-     * **CPU_EXTENSION** environment variable is not required.
    
 2. To run the application on **Intel® Neural Compute Stick**: 
       * Change the **%env DEVICE = CPU** to **%env DEVICE = MYRIAD**
       * The Intel® Neural Compute Stick can only run FP16 models. Hence change the environment variable for the model as shown below. <br>
               
             %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml
-      * **CPU_EXTENSION** environment variable is not required.
 
 3. To run the application on **Intel® Movidius™ VPU**:
      * Change the **%env DEVICE = CPU** to **%env DEVICE = HDDL**
      * The HDDL-R can only run FP16 models. Change the environment variable for the model as shown below  and the models that are passed to the application must be of data type FP16. <br>
  
            %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml
-     * **CPU_EXTENSION** environment variable is not required.
 
+<!--
 4. To run the application on **FPGA**:
      * Change the **%env DEVICE = CPU** to **%env DEVICE = HETERO:FPGA,CPU**
      * With the **floating point precision 16 (FP16)**, change the path of the model in the environment variable **MODEL** as given below:<br>
       
-           %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/intel/person-detection-retail-0013/FP16/person-detection-retail-0013.xml
+           %env MODEL=/opt/intel/openvino/deployment_tools/open_model_zoo/tools/downloader/Retail/object_detection/pedestrian/rmnet_ssd/0013/dldt/FP16/person-detection-retail-0013.xml
      * Export the **CPU_EXTENSION** environment variable as shown below:
          
-           %env CPU_EXTENSION = /opt/intel/openvino/inference_engine/lib/intel64/libcpu_extension_sse4.so
+-->
 
 4. To obtain **account name** and **account key** from **azure portal**, please refer:
    https://docs.microsoft.com/en-us/azure/storage/blobs/storage-quickstart-blobs-python#copy-your-credentials-from-the-azure-portal

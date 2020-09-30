@@ -25,7 +25,8 @@
 sudo apt-get update
 sudo apt-get install python3-pip
 sudo apt-get install python3-dev libssl-dev
-sudo pip3 install azure numpy jupyter
+sudo pip3 install numpy jupyter
+pip3 install azure-storage-blob==2.1.0 azure-mgmt-storage
 
 cd resources
 wget -O store-aisle-detection.mp4 https://github.com/intel-iot-devkit/sample-videos/raw/master/store-aisle-detection.mp4
